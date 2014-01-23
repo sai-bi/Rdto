@@ -1,0 +1,12 @@
+{
+    "manifest_version":2,
+
+    "name":"Read Share",
+    "description": "This extension allows users to comment anywhere in an article, and highlight
+    what they are interested",
+    "version":"1.0",
+
+    "browser_action":{
+        "default_icon":"./res/logo.png"
+    }
+}
