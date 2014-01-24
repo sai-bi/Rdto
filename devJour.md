@@ -16,11 +16,14 @@ will also provide support for users to comment just beside the content they are
 interested in.
 
 ###Problems and Solutions
-
-
-
+1. How to position selection text?
+Find selected text and its context, record it in server, and relocate it 
+when the same page is loaded using string matching.
  
+2. What if the selection text covers multiple HTML tags?
+We only allow select text in one paragraph, just like Medium, when you have
+selected text covering multiple paragraphs, the comment button will not appear.
 
-
+3. 
 
 
