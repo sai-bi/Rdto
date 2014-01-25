@@ -3,6 +3,8 @@ GEM
   specs:
     backports (3.4.0)
     bson (1.9.2)
+    bson_ext (1.9.2)
+      bson (~> 1.9.2)
     mongo (1.9.2)
       bson (~> 1.9.2)
     multi_json (1.8.4)
@@ -28,6 +30,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bson_ext
   mongo
   sinatra
   sinatra-contrib
