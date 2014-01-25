@@ -32,5 +32,10 @@ hidden, therefore the mouseclick event will not be captured. I solve this proble
 by checking the changes of selected text, thus determining whether to hide the 
 buttons or not.
 
-4. Mark something as important, what is the process?
-4. 
+4. How to limit the content user can select and comment?
+The solution is that we have to limit the number of block elements in the selected
+text.
+
+
+
+
