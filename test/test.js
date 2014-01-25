@@ -29,18 +29,7 @@ function markImportant(){
 
 // analysis the selection text
 function isSelectable(currNode){
-    // get selected range 
-    // var selectedHTML = getSelectionHtml();
-
-    // alert(selectedHTML);
-    // console.log(selectedHTML);
-    // var parsedHTML = $.parseHTML(selectedHTML);
-    // console.log(parsedHTML);
-
-    // var nodeName = [];
-    // $.each(parsedHTML,function(i,el){
-        // nodeName[i] = el.nodeName; 
-    // } 
+    
     if(blockTagNum > 1)
         return false;
     var textNum = 0;    
@@ -79,38 +68,35 @@ function comment(){
 
 //set the location of select box
 function setCommentLocation(){ 
+    var mouseMoved = false;
     $('body').mousedown(function(event){
+        mouseMoved = false;
+        if(mouseInBubble(event.pageX,event.pageY))
+            return;
         mousePosX = event.pageX;
         mousePosY = event.pageY;
-        var selection = getSelectedText();
-        // console.log(selection); 
-        // if(selection == lastSelection && selection != "")
-            // return;
-        // console.log("mouse down hidden");  
-        // $("#bubble").css("visibility","hidden"); 
+        $("#bubble").css("visibility","hidden"); 
     });
 
-    $('body').mouseup(function(){
-        console.log('Mouseup');
+    $('body').mousemove(function(event){
+        mouseMoved = true; 
+    });
+
+    $('body').mouseup(function(event){
         var selection = getSelectedText();
-        console.log(selection);
-        if(selection == ""){
-            console.log("mouse up hidden");  
-            $("#bubble").css("visibility","hidden"); 
+        if(mouseInBubble(event.pageX,event.pageY)){
             return;
-        }
-        if(selection == lastSelection){
+        } 
+        if(!mouseMoved)
             return;
-        }
-    
         var selectedHTML = getSelectionHtml();
         var parsedHTML = $.parseHTML(selectedHTML); 
-        console.log(parsedHTML);
         blockTagNum = 0; 
         var result = isSelectable(parsedHTML); 
         if(!result){
             return;
         }
+
         lastSelection = selection; 
         
         $("#bubble").css("visibility","visible"); 
@@ -118,23 +104,42 @@ function setCommentLocation(){
         $("#bubble").css("top",mousePosY-70); 
     });
     
-    $('body').bind('click',function(){
-        console.log('mouse click');
-        var selection = getSelectedText();
-        console.log(selection);
-        if(selection == ""){
-            console.log("mouse up hidden");  
-            $("#bubble").css("visibility","hidden"); 
-            return;
-        }
-        if(selection == lastSelection){
-            return;
-        }
+    // $('body').bind('click',function(){
+        // var selection = getSelectedText();
+        // if(selection == ""){
+            // $("#bubble").css("visibility","hidden"); 
+            // return;
+        // }
+        // if(selection == lastSelection){
+            // return;
+        // }
         
-        $("#bubble").css("visibility","hidden"); 
-    });
+        // $("#bubble").css("visibility","hidden"); 
+    // });
 
 }
+
+function mouseInBubble(x,y){
+    // x = x - 60;
+    // y = y - 70;
+    x = x + 10;
+    y = y + 10;
+    console.log(x);
+    console.log(y);
+    var pos = $("#bubble").position();
+    console.log(pos.left);
+    console.log(pos.top);
+    if(x < pos.left)
+        return false;
+    if(x > pos.left + $("#bubble").width())
+        return false;        
+    if(y < pos.top)
+        return false;
+    if(y > pos.top + $("#bubble").height())
+        return false;
+    return true;
+}
+
 
 // set mouse action
 function setMouseAction(){
