@@ -19,8 +19,8 @@ $('document').ready(function(){
     importantButton.addEventListener("click",markImportant,false);
     commentButton.addEventListener("click",comment,false);
     setCommentLocation();
-    
-      
+
+
 });
 
 function markImportant(){
@@ -29,15 +29,15 @@ function markImportant(){
 
 // analysis the selection text
 function isSelectable(currNode){
-    
+
     if(blockTagNum > 1)
         return false;
-    var textNum = 0;    
+    var textNum = 0;
     var blockElements = ["p","h1","h2","h3","h4","h5","h6",
                         "ol","ul","pre","address","blockquote",
                         "dl","div","fieldset","form","hr","noscript",
                         "table","li","br"];
-    
+
     for(var i = 0;i < currNode.length;i++){
         var temp = currNode[i].nodeName.toLowerCase();
         console.log(temp);
@@ -49,13 +49,13 @@ function isSelectable(currNode){
         if(blockTagNum == 1 && textNum != 0)
             return false;
         if(blockTagNum > 1)
-            return false;         
-        isSelectable(currNode[i].childNodes);        
+            return false;
+        isSelectable(currNode[i].childNodes);
         if(blockTagNum > 1)
-            return false;         
+            return false;
 
-    } 
-    return true;   
+    }
+    return true;
 }
 
 
@@ -67,7 +67,7 @@ function comment(){
 
 
 //set the location of select box
-function setCommentLocation(){ 
+function setCommentLocation(){
     var mouseMoved = false;
     $('body').mousedown(function(event){
         mouseMoved = false;
@@ -75,46 +75,46 @@ function setCommentLocation(){
             return;
         mousePosX = event.pageX;
         mousePosY = event.pageY;
-        $("#bubble").css("visibility","hidden"); 
+        $("#bubble").css("visibility","hidden");
     });
 
     $('body').mousemove(function(event){
-        mouseMoved = true; 
+        mouseMoved = true;
     });
 
     $('body').mouseup(function(event){
         var selection = getSelectedText();
         if(mouseInBubble(event.pageX,event.pageY)){
             return;
-        } 
+        }
         if(!mouseMoved)
             return;
         var selectedHTML = getSelectionHtml();
-        var parsedHTML = $.parseHTML(selectedHTML); 
-        blockTagNum = 0; 
-        var result = isSelectable(parsedHTML); 
+        var parsedHTML = $.parseHTML(selectedHTML);
+        blockTagNum = 0;
+        var result = isSelectable(parsedHTML);
         if(!result){
             return;
         }
 
-        lastSelection = selection; 
-        
-        $("#bubble").css("visibility","visible"); 
+        lastSelection = selection;
+
+        $("#bubble").css("visibility","visible");
         $("#bubble").css("left",mousePosX-60);
-        $("#bubble").css("top",mousePosY-70); 
+        $("#bubble").css("top",mousePosY-70);
     });
-    
+
     // $('body').bind('click',function(){
         // var selection = getSelectedText();
         // if(selection == ""){
-            // $("#bubble").css("visibility","hidden"); 
+            // $("#bubble").css("visibility","hidden");
             // return;
         // }
         // if(selection == lastSelection){
             // return;
         // }
-        
-        // $("#bubble").css("visibility","hidden"); 
+
+        // $("#bubble").css("visibility","hidden");
     // });
 
 }
@@ -132,7 +132,7 @@ function mouseInBubble(x,y){
     if(x < pos.left)
         return false;
     if(x > pos.left + $("#bubble").width())
-        return false;        
+        return false;
     if(y < pos.top)
         return false;
     if(y > pos.top + $("#bubble").height())
@@ -143,10 +143,10 @@ function mouseInBubble(x,y){
 
 // set mouse action
 function setMouseAction(){
-    $('body').mouseup(function(){ 
+    $('body').mouseup(function(){
         mouseDrag = false;
         var selection = window.getSelection().getRangeAt(0);
-        highLight(selection);  
+        highLight(selection);
     });
 
     $('body').mousemove(function(){
@@ -158,8 +158,8 @@ function setMouseAction(){
     });
 
     $('body').mousedown(function(){
-        mouseDown = true; 
-    }); 
+        mouseDown = true;
+    });
 
 }
 
@@ -186,7 +186,7 @@ function getSelectionHtml() {
 
 // remove hightlights
 function removeHighlight(){
-    var selection = window.getSelection().getRangeAt(0); 
+    var selection = window.getSelection().getRangeAt(0);
     var b = document.getElementsByClassName('highlight');
     if(b.length == 0)
     return;
@@ -196,7 +196,7 @@ function removeHighlight(){
             parent.insertBefore(  b[ 0 ].firstChild, b[ 0 ] );
         }
         parent.removeChild( b[ 0 ] );
-    } 
+    }
 
 }
 
