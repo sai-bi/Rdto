@@ -1,0 +1,74 @@
+@charset "utf-8";
+
+/**
+ * test.css
+ *
+ * @author 
+ * @version 2014/01/24
+ */
+#bubble 
+{
+position: relative;
+width: 100px;
+height: 50px;
+padding: 0px;
+background: #78787C;
+-webkit-border-radius: 8px;
+-moz-border-radius: 8px;
+border-radius: 8px;
+cursor: pointer;
+visibility: hidden;
+}
+
+#bubble:after 
+{
+content: "";
+position: absolute;
+bottom: -10px;
+left: 40px;
+border-style: solid;
+border-width: 10px 10px 0;
+border-color: #78787C transparent;
+display: block;
+width: 0;
+z-index: 1;
+}
+/* .bubble:before {
+    border-left: 22px solid transparent;
+    border-right: 13px solid transparent;
+    border-top: 10px solid;
+    border-top-color: inherit;
+    bottom: -10px;
+    margin-left: -20px;
+}  */
+
+#importantButton{
+    opacity: 1;
+    width: 29px;
+    height: 29px;
+    background-image: url("./res/important2.svg");  
+    background-size:29px 29px;
+    border: none;
+    margin-top: 8px;
+    margin-bottom:0px;
+    margin-left: 8px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+#commentButton{
+    opacity: 1;
+    width: 30px;
+    height: 30px;
+    background-image: url("./res/comment.svg");  
+    background-size:30px 30px;
+    border: none;
+    margin-top: 8px;
+    margin-bottom:0px;
+    margin-left: 12px;
+    margin-right: 4px;
+    cursor: pointer;
+}
+
+
+

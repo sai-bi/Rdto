@@ -24,6 +24,13 @@ when the same page is loaded using string matching.
 We only allow select text in one paragraph, just like Medium, when you have
 selected text covering multiple paragraphs, the comment button will not appear.
 
-3. 
+3. How to catch mousedown and mouseclick events with JavaScirpt?
+In my implementation, I found that mouseclick events are not captured when 
+mousedown listener exists. 
+Solved: this is because in my implementation, after mousedown, the button is 
+hidden, therefore the mouseclick event will not be captured. I solve this problem
+by checking the changes of selected text, thus determining whether to hide the 
+buttons or not.
 
-
+4. Mark something as important, what is the process?
+4. 

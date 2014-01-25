@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="generator" content="gvim" />
+<meta name="author" content="" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<title>Test</title>
+
+
+<script src="jquery-1.10.2.min.js"></script>
+<script src="test.js">  </script>
+
+
+<link rel="stylesheet" type="text/css" href="test.css" />
+</head>
+<body>
+<!-- <img src="res/comment2.png" alt="comment"/> -->
+<div id="bubble">
+    <!-- <button id="importantButton"> </button> -->
+    <!-- <button id="commentButton"> comment</button> -->
+    <img id="commentButton" alt="comment" src="res/comment.svg"/>   
+    <img id="importantButton" alt="important" src="res/important2.svg"/>
+</div>
+
+<div>
+    Algorithms that are the main driver behind a system are, in my opinion, easier to find in non-algorithms courses for the same reason theorems with immediate applications are easier to find in applied mathematics rather than pure mathematics courses. It is rare for a practical problem to have the exact structure of the abstract problem in a lecture. To be argumentative, I see no reason why fashionable algorithms course material such as Strassen's multiplication, the AKS primality test, or the Moser-Tardos algorithm is relevant for low-level practical problems of implementing a video database, an optimizing compiler, an operating system, a network congestion control system or any other system. The value of these courses is learning that there are intricate ways to exploit the structure of a problem to find efficient solutions. Advanced algorithms is also where one meets simple algorithms whose analysis is non-trivial. For this reason, I would not dismiss simple randomized algorithms or PageRank.
+</div>
+I think you can choose any large piece of software and find basic and advanced algorithms implemented in it. As a case study, I've done this for the Linux kernel, and shown a few examples from Chromium.
+<h2>Basic Data Structures and Algorithms in the Linux kernel</h2>
+Links are to the <a href="https://github.com/mirrors/linux-2.6">source code on github</a>.
+
+<!--more-->
+<ol>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/lib/llist.c">Linked list</a>, <a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/list.h">doubly linked list</a>, <a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/llist.h">lock-free linked list</a>.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/39caa0916ef27cf1da5026eb708a2b8413156f75/lib/btree.c">B+ Trees</a> with comments telling you what you can't find in the textbooks.
+    <blockquote>A relatively simple B+Tree implementation. I have written it as a learning exercise to understand how B+Trees work. Turned out to be useful as well.
+
+        ...
+
+        A tricks was used that is not commonly found in textbooks. The lowest values are to the right, not to the left. All used slots within a node are on the left, all unused slots contain NUL values. Most operations simply loop once over all slots and terminate on the first NUL.</blockquote>
+    </li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/plist.h">Priority sorted lists</a> used for <a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/include/linux/rtmutex.h">mutexes</a>, <a href="https://github.com/mirrors/linux-2.6/blob/f0d55cc1a65852e6647d4f5d707c1c9b5471ce3c/drivers/powercap/intel_rapl.c">drivers</a>, etc.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/rbtree.h">Red-Black trees</a> are <a href="http://lwn.net/Articles/184495/">used</a> for scheduling, virtual memory management, to track file descriptors and directory entries,etc.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/interval_tree.h">Interval trees</a></li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/radix-tree.h">Radix trees</a>, are used for <a href="http://lwn.net/Articles/175432/">memory management</a>, NFS related lookups and networking related functionality.
+    <blockquote>A common use of the radix tree is to store pointers to struct pages;</blockquote>
+    </li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/include/linux/prio_heap.h">Priority heap</a>, which is literally, a textbook implementation, used in the <a href="https://github.com/mirrors/linux-2.6/blob/42a2d923cc349583ebf6fdd52a7d35e1c2f7e6bd/include/linux/cgroup.h">control group system</a>.
+    <blockquote>Simple insertion-only static-sized priority heap containing pointers, based on CLR, chapter 7</blockquote>
+    </li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/include/linux/hash.h">Hash functions</a>, with a reference to Knuth and to a paper.
+    <blockquote>Knuth recommends primes in approximately golden ratio to the maximum
+        integer representable by a machine word for multiplicative hashing.
+        Chuck Lever verified the effectiveness of this technique:
+
+        <a href="http://www.citi.umich.edu/techreports/reports/citi-tr-00-1.pdf">http://www.citi.umich.edu/techreports/reports/citi-tr-00-1.pdf</a>
+
+        These primes are chosen to be bit-sparse, that is operations on
+        them can use shifts and additions instead of multiplications for
+        machines where multiplications are slow.</blockquote>
+    </li>
+    <li>Some parts of the code, such as <a href="https://github.com/mirrors/linux-2.6/blob/0b1e73ed225d8f7aeef96b74147215ca8b990dce/drivers/staging/lustre/lustre/lov/lov_pool.c">this driver</a>, implement their own hash function.
+    <blockquote>hash function using a Rotating Hash algorithm
+
+        Knuth, D. The Art of Computer Programming,
+        Volume 3: Sorting and Searching,
+        Chapter 6.4.
+        Addison Wesley, 1973</blockquote>
+    </li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/hashtable.h">Hash tables</a> used to implement <a href="https://github.com/mirrors/linux-2.6/blob/42a2d923cc349583ebf6fdd52a7d35e1c2f7e6bd/fs/inode.c">inodes</a>, <a href="https://github.com/mirrors/linux-2.6/blob/ff812d724254b95df76b7775d1359d856927a840/fs/btrfs/check-integrity.c">file system integrity checks</a> etc.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/bitmap.h">Bit arrays</a>, which are used for dealing with flags, interrupts, etc. and are featured in Knuth Vol. 4.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/semaphore.h">Semaphores</a> and <a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/spinlock.h">spin locks</a></li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/lib/bsearch.c">Binary search</a> is used for <a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/drivers/sh/intc/chip.c">interrupt handling</a>, <a href="https://github.com/mirrors/linux-2.6/blob/10d0c9705e80bbd3d587c5fad24599aabaca6688/drivers/base/regmap/regcache.c">register cache lookup</a>, etc.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/fs/befs/btree.c">Binary search with B-trees</a></li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/a9238741987386bb549d61572973c7e62b2a4145/drivers/acpi/acpica/nswalk.c">Depth first search</a> and variant used in <a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/fs/configfs/dir.c">directory configuration</a>.
+    <blockquote>Performs a modified depth-first walk of the namespace tree, starting
+        (and ending) at the node specified by start_handle. The callback
+        function is called whenever a node that matches the type parameter is
+        found. If the callback function returns a non-zero value, the search
+        is terminated immediately and this value is returned to the caller.</blockquote>
+    </li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/4fbf888accb39af423f271111d44e8186f053723/kernel/locking/lockdep.c">Breadth first search</a> is used to check correctness of locking at runtime.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/lib/list_sort.c">Merge sort</a> on linked lists is used for <a href="https://github.com/mirrors/linux-2.6/blob/42a2d923cc349583ebf6fdd52a7d35e1c2f7e6bd/fs/ubifs/gc.c">garbage collection</a>, <a href="https://github.com/mirrors/linux-2.6/blob/ff812d724254b95df76b7775d1359d856927a840/fs/btrfs/raid56.c">file system management</a>, etc.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/drivers/media/common/saa7146/saa7146_hlp.c">Bubble sort</a> is amazingly implemented too, in a driver library.</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/lib/ts_kmp.c">Knuth-Morris-Pratt string matching</a>,
+    <blockquote>Implements a linear-time string-matching algorithm due to Knuth,
+        Morris, and Pratt [1]. Their algorithm avoids the explicit
+        computation of the transition function DELTA altogether. Its
+        matching time is O(n), for n being length(text), using just an
+        auxiliary function PI[1..m], for m being length(pattern),
+        precomputed from the pattern in time O(m). The array PI allows
+        the transition function DELTA to be computed efficiently
+        "on the fly" as needed. Roughly speaking, for any state
+        "q" = 0,1,...,m and any character "a" in SIGMA, the value
+        PI["q"] contains the information that is independent of "a" and
+        is needed to compute DELTA("q", "a") <a href="https://github.com/mirrors/linux-2.6/blob/master/lib/llist.c">2</a>. Since the array PI
+        has only m entries, whereas DELTA has O(m|SIGMA|) entries, we
+        save a factor of |SIGMA| in the preprocessing time by computing
+        PI rather than DELTA.
+
+        [1] Cormen, Leiserson, Rivest, Stein
+        Introdcution to Algorithms, 2nd Edition, MIT Press
+
+        [2] See finite automation theory</blockquote>
+    </li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/lib/ts_bm.c">Boyer-Moore pattern matching</a> with references and recommendations for when to prefer the alternative.
+    <blockquote>Implements Boyer-Moore string matching algorithm:
+
+        [1] A Fast String Searching Algorithm, R.S. Boyer and Moore.
+        Communications of the Association for Computing Machinery,
+        20(10), 1977, pp. 762-772.
+        <a href="http://www.cs.utexas.edu/users/moore/publications/fstrpos.pdf">http://www.cs.utexas.edu/users/moore/publications/fstrpos.pdf</a>
+
+        [2] Handbook of Exact String Matching Algorithms, Thierry Lecroq,
+        2004
+        <a href="http://www-igm.univ-mlv.fr/~lecroq/string/string.pdf">http://www-igm.univ-mlv.fr/~lecroq/string/string.pdf</a>
+
+        Note: Since Boyer-Moore (BM) performs searches for matchings from
+        right
+        to left, it's still possible that a matching could be spread over
+        multiple blocks, in that case this algorithm won't find any
+        coincidence.
+
+        If you're willing to ensure that such thing won't ever happen,
+        use the
+        Knuth-Pratt-Morris (KMP) implementation instead. In conclusion,
+        choose
+        the proper string search algorithm depending on your setting.
+
+        Say you're using the textsearch infrastructure for filtering,
+        NIDS or
+        any similar security focused purpose, then go KMP. Otherwise, if
+        you
+        really care about performance, say you're classifying packets to
+        apply
+        Quality of Service (QoS) policies, and you don't mind about
+        possible
+        matchings spread over multiple fragments, then go BM.</blockquote>
+    </li>
+</ol>
+<h2>Data Structures and Algorithms in the Chromium Web Browser</h2>
+Links are to the <a href="https://code.google.com/p/chromium/">source code on Google code</a>. I'm only going to list a few. I would suggest using the search feature to look up your favourite algorithm or data structure.
+<ol>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/v8/src/splay-tree.h">Splay trees</a>.
+    <blockquote>The tree is also parameterized by an allocation policy
+        (Allocator). The policy is used for allocating lists in the C free
+        store or the zone; see zone.h.</blockquote>
+    </li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/native_client_sdk/src/examples/demo/voronoi/index.html">Voronoi diagrams</a> are used in a demo.</li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm">Tabbing based on Bresenham's algorithm</a>.</li>
+</ol>
+There are also such data structures and algorithms in the third-party code included in the Chromium code.
+<ol>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/bintrees/bintrees/bintree.py">Binary trees</a></li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/bintrees/bintrees/rbtree.py">Red-Black trees</a>
+    <blockquote>Conclusion of Julian Walker
+
+        Red black trees are interesting beasts. They're believed to be
+        simpler than
+        AVL trees (their direct competitor), and at first glance this seems
+        to be the
+        case because insertion is a breeze. However, when one begins to play
+        with the
+        deletion algorithm, red black trees become very tricky. However, the
+        counterweight to this added complexity is that both insertion and
+        deletion
+        can be implemented using a single pass, top-down algorithm. Such is
+        not the
+        case with AVL trees, where only the insertion algorithm can be
+        written top-down.
+        Deletion from an AVL tree requires a bottom-up algorithm.
+
+        ...
+
+        Red black trees are popular, as most data structures with a
+        whimsical name.
+        For example, in Java and C++, the library map structures are
+        typically
+        implemented with a red black tree. Red black trees are also
+        comparable in
+        speed to AVL trees. While the balance is not quite as good, the work
+        it takes
+        to maintain balance is usually better in a red black tree. There are
+        a few
+        misconceptions floating around, but for the most part the hype about
+        red black
+        trees is accurate.</blockquote>
+    </li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/bintrees/bintrees/avltree.py">AVL trees</a></li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/zlib/deflate.c">Rabin-Karp string matching</a> is used for compression.</li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/native_client/src/trusted/validator_ragel/dfa_traversal.py">Compute the suffixes of an automaton</a>.</li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/wtf/BloomFilter.h">Bloom filter</a> implemented by Apple Inc.</li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/libvpx/source/libvpx/vp8/common/textblit.c">Bresenham's algorithm</a>.</li>
+</ol>
+<h2>Programming Language Libraries</h2>
+I think they are worth considering. The programming languages designers thought it was worth the time and effort of some engineers to implement these data structures and algorithms so others would not have to. The existence of libraries is part of the reason we can find basic data structures reimplemented in software that is written in C but less so for Java applications.
+<ol>
+    <li>The <a href="http://www.cplusplus.com/reference/stl/">C++ STL</a> includes lists, stacks, queues, maps, vectors, and algorithms for <a href="http://www.cplusplus.com/reference/algorithm/">sorting, searching and heap manipulation</a>.</li>
+    <li><a href="http://docs.oracle.com/javase/7/docs/api/">The Java API</a> is very extensive and covers much more.</li>
+    <li>The <a href="http://www.boost.org/doc/libs/1_55_0/libs/algorithm/doc/html/index.html#algorithm.description_and_rationale">Boost C++ library</a> includes algorithms like Boyer-Moore and Knuth-Morris-Pratt string matching algorithms.</li>
+</ol>
+<h2>Allocation and Scheduling Algorithms</h2>
+I find these interesting because even though they are called heuristics, the policy you use dictates the type of algorithm and data structure that are required, so one need to know about stacks and queues.
+<ol>
+    <li>Least Recently Used can be implemented in multiple ways. A <a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/list_lru.h">list-based implementation</a> in the Linux kernel.</li>
+    <li>Other possibilities are First In First Out, Least Frequently Used, and Round Robin.</li>
+    <li>A variant of FIFO was used by the VAX/VMS system.</li>
+    <li><a href="http://en.wikipedia.org/wiki/Page_replacement_algorithm#Clock">The Clock algorithm</a> by <a href="http://dl.acm.org/citation.cfm?id=4750">Richard Carr</a> is used for page frame replacement in Linux.</li>
+    <li>The Intel i860 processor used a random replacement policy.</li>
+    <li><a href="http://en.wikipedia.org/wiki/Adaptive_Replacement_Cache">Adaptive Replacement Cache</a> is used in some IBM storage controllers, and was used in PostgreSQL though <a href="http://www.varlena.com/GeneralBits/96.php">only briefly due to patent concerns</a>.</li>
+    <li>The <a href="http://en.wikipedia.org/wiki/Buddy_memory_allocation">Buddy memory allocation algorithm</a>, which is discussed by Knuth in TAOCP Vol. 1 is used in the Linux kernel, and the jemalloc concurrent allocator used by FreeBSD and in <a href="http://www.facebook.com/notes/facebook-engineering/scalable-memory-allocation-using-jemalloc/480222803919">facebook</a>.</li>
+</ol>
+<h2>Core utils in *nix systems</h2>
+<ol>
+    <li><em>grep</em> and <em>awk</em> both implement the Thompson-McNaughton-Yamada construction of NFAs from regular expressions, which apparently <a href="http://swtch.com/~rsc/regexp/regexp1.html">even beats the Perl implementation</a>.</li>
+    <li><em>tsort</em> implements topological sort.</li>
+    <li><em>fgrep</em> implements the <a href="http://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_string_matching_algorithm">Aho-Corasick string matching algorithm.</a></li>
+    <li><em>GNU grep</em>, <a href="http://lists.freebsd.org/pipermail/freebsd-current/2010-August/019310.html">implements the Boyer-Moore algorithm</a> according to the author Mike Haertel.</li>
+    <li>crypt(1) on Unix implemented a variant of the encryption algorithm in the Enigma machine.</li>
+    <li><em><a href="http://www.cs.dartmouth.edu/~doug/diff.pdf">Unix diff</a></em> implemented by Doug McIllroy, based on a prototype co-written with James Hunt, performs better than the standard dynamic programming algorithm used to compute Levenshtein distances. The <a href="http://linux.die.net/man/3/diff">Linux version</a> computes the shortest edit distance.</li>
+</ol>
+<h2>Cryptographic Algorithms</h2>
+This could be a very long list. Cryptographic algorithms are implemented in all software that can perform secure communications or transactions.
+<ol>
+    <li><a href="http://en.wikipedia.org/wiki/Merkle_tree">Merkle trees</a>, specifically the Tiger Tree Hash variant, were used in peer-to-peer applications such as <a href="https://github.com/gtk-gnutella/bitter">GTK Gnutella</a> and <a href="http://en.wikibooks.org/wiki/LimeWire">LimeWire</a>.</li>
+    <li><a href="http://en.wikipedia.org/wiki/MD5">MD5</a> is used to provide a checksum for software packages and is used for integrity checks on *nix systems (<a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/crypto/md5.c">Linux implementation</a>) and is also supported on Windows and OS X.</li>
+    <li><a href="http://www.openssl.org/">OpenSSL</a> implements many cryptographic algorithms including AES, Blowfish, DES, SHA-1, SHA-2, RSA, DES, etc.</li>
+</ol>
+<h2>Compilers</h2>
+<ol>
+    <li><a href="http://en.wikipedia.org/wiki/LALR_parser">LALR parsing</a> is implemented by yacc and bison.</li>
+    <li>Dominator algorithms are used in most optimizing compilers based on SSA form.</li>
+    <li><em>lex</em> and <em>flex</em> compile regular expressions into NFAs.</li>
+</ol>
+<h2>Compression and Image Processing</h2>
+<ol>
+    <li><a href="http://en.wikipedia.org/wiki/Lempel_Ziv">The Lempel-Ziv</a> algorithms for the GIF image format are implemented in image manipulation programs, starting from the *nix utility <em>convert</em> to complex programs.</li>
+    <li>Run length encoding is used to generate PCX files (used by the original Paintbrush program), compressed BMP files and TIFF files.</li>
+    <li>Wavelet compression is the basis for JPEG 2000 so all digital cameras that produce JPEG 2000 files will be implementing this algorithm.</li>
+    <li>Reed-Solomon error correction is implemented in <a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/lib/reed_solomon/reed_solomon.c">the Linux kernel</a>, CD drives, barcode readers and was combined with convolution for image transmission from Voyager.</li>
+</ol>
+<h2>Conflict Driven Clause Learning</h2>
+Since the year 2000, the running time of SAT solvers on industrial benchmarks (usually from the hardware industry, though though other sources are used too) has decreased nearly exponentially every year. A very important part of this development is the <em>Conflict Driven Clause Learning</em> algorithm that combines the <em>Boolean Constraint Propagation</em> algorithm in the original paper of Davis Logemann and Loveland with the technique of clause learning that originated in constraint programming and artificial intelligence research. For specific, industrial modelling, SAT is considered an easy problem (<a href="http://rjlipton.wordpress.com/2009/07/13/sat-solvers-is-sat-hard-or-easy/">see this discussion</a>). To me, this is one of the greatest success stories in recent times because it combines algorithmic advances spread over several years, clever engineering ideas, experimental evaluation, and a concerted communal effort to solve the problem. The <a href="http://dl.acm.org/citation.cfm?id=1536637">CACM article by Malik and Zhang</a> is a good read. This algorithm is taught in many universities (I have attended four where it was the case) but typically in a logic or formal methods class.
+
+<!--more-->
+
+Applications of SAT solvers are numerous. IBM, Intel and many other companies have their own SAT solver implementations. The <a href="http://en.opensuse.org/Portal%3aLibzypp">package manager</a> in OpenSUSE also uses a SAT solver. 
+</body>
+</html>
+
