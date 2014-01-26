@@ -70,5 +70,7 @@ z-index: 1;
     cursor: pointer;
 }
 
-
+.highlight {
+    background-color: #FFFF88;
+}
 

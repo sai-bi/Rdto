@@ -6,26 +6,42 @@
  */
 var mousePosX;
 var mousePosY;
-var lastSelection = "";
+var mySelection = "";
 var importantButton;
 var commentButton;
 var blockTagNum = 0;
+var markSelected = false;
+var selectedHTML = "";
 $('document').ready(function(){
 
     var mouseDown = false;
     // add event listener
     importantButton = document.getElementById('importantButton');
     commentButton = document.getElementById('commentButton');
-    importantButton.addEventListener("click",markImportant,false);
+    importantButton.addEventListener("mousedown",markImportant,false);
     commentButton.addEventListener("click",comment,false);
+    $("body").textHighlighter({
+        onBeforeHighlight: function(){
+            mySelection = getSelectedText(); 
+            selectedHTML = getSelectionHtml();   
+
+            console.log(markSelected);
+
+            return markSelected;
+        },
+        onAfterHighlight: function(){
+            markSelected = false;
+            $("#bubble").css("visibility","hidden"); 
+            // this.removeAllRanges();
+        }
+    });
     setCommentLocation();
-    
-      
+     
 });
 
 function markImportant(){
-    highlightSelection();
-    $("#bubble").css("visibility","hidden"); 
+    console.log(markSelected + "button click");
+    markSelected = true;     
 }
 
 // analysis the selection text
@@ -38,7 +54,7 @@ function isSelectable(currNode){
                         "ol","ul","pre","address","blockquote",
                         "dl","div","fieldset","form","hr","noscript",
                         "table","li","br"];
-    
+    console.log(currNode); 
     for(var i = 0;i < currNode.length;i++){
         var temp = currNode[i].nodeName.toLowerCase();
         if(temp.parElement == null && temp == "#text")
@@ -83,13 +99,15 @@ function setCommentLocation(){
     });
 
     $('body').mouseup(function(event){
-        var selection = getSelectedText();
+        // var selection = getSelectedText();
+         
         if(mouseInBubble(event.pageX,event.pageY)){
             return;
         } 
         if(!mouseMoved)
             return;
-        var selectedHTML = getSelectionHtml();
+            
+        // var selectedHTML = getSelectionHtml();
         var parsedHTML = $.parseHTML(selectedHTML); 
         blockTagNum = 0; 
         var result = isSelectable(parsedHTML); 
@@ -97,7 +115,6 @@ function setCommentLocation(){
             return;
         }
 
-        lastSelection = selection; 
         
         $("#bubble").css("visibility","visible"); 
         $("#bubble").css("left",mousePosX-60);
@@ -190,7 +207,7 @@ function removeHighlight(){
 
 // hightlight selected text
 function highLight(range){
-    var newNode = document.createElement("div");
+    var newNode = document.createElement("span");
     newNode.setAttribute(
         "style",
         "background-color: yellow; display: inline;"
