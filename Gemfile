@@ -2,7 +2,8 @@
 source "https://rubygems.org"
 
 # gem "rails"
+gem 'bson_ext'
+gem 'mongo'
 gem 'sinatra'
 gem 'sinatra-contrib'
-gem 'mongo'
-gem 'bson_ext'
+gem 'thin'
