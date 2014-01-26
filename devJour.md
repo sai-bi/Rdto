@@ -44,4 +44,7 @@ To add extra difficulty to this problem, there are chances that when the same pa
 is loaded next time, its content is changes, in this situation, how should we relocate
 the selected text?
 
+6. After some text is highlighted, it is surrounded by a "span" element, instead of
+a "div" element.
+Let's start to write a highlight function of ourselves.
 
