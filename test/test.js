@@ -24,7 +24,7 @@ $('document').ready(function(){
 });
 
 function markImportant(){
-
+     
 }
 
 // analysis the selection text
@@ -40,7 +40,6 @@ function isSelectable(currNode){
     
     for(var i = 0;i < currNode.length;i++){
         var temp = currNode[i].nodeName.toLowerCase();
-        console.log(temp);
         if(temp.parElement == null && temp == "#text")
             textNum = textNum + 1;
         if(jQuery.inArray(temp,blockElements) != -1){
@@ -104,31 +103,18 @@ function setCommentLocation(){
         $("#bubble").css("top",mousePosY-70); 
     });
     
-    // $('body').bind('click',function(){
-        // var selection = getSelectedText();
-        // if(selection == ""){
-            // $("#bubble").css("visibility","hidden"); 
-            // return;
-        // }
-        // if(selection == lastSelection){
-            // return;
-        // }
-        
-        // $("#bubble").css("visibility","hidden"); 
-    // });
+   
 
 }
 
 function mouseInBubble(x,y){
-    // x = x - 60;
-    // y = y - 70;
     x = x + 10;
     y = y + 10;
-    console.log(x);
-    console.log(y);
+    // console.log(x);
+    // console.log(y);
     var pos = $("#bubble").position();
-    console.log(pos.left);
-    console.log(pos.top);
+    // console.log(pos.left);
+    // console.log(pos.top);
     if(x < pos.left)
         return false;
     if(x > pos.left + $("#bubble").width())
