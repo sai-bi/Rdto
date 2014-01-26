@@ -31,11 +31,17 @@ Solved: this is because in my implementation, after mousedown, the button is
 hidden, therefore the mouseclick event will not be captured. I solve this problem
 by checking the changes of selected text, thus determining whether to hide the 
 buttons or not.
+Final solution: based on mouse location.
 
 4. How to limit the content user can select and comment?
 The solution is that we have to limit the number of block elements in the selected
 text.
 
-
+5. How to record the select range?
+That is, after users select some text, in what way should we record it so that we
+can relocate the selected text next time when the page is loaded?
+To add extra difficulty to this problem, there are chances that when the same page
+is loaded next time, its content is changes, in this situation, how should we relocate
+the selected text?
 
 
